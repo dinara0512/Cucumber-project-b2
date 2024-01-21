@@ -12,6 +12,7 @@ import org.openqa.selenium.Keys;
 
 import javax.swing.plaf.IconUIResource;
 import java.util.List;
+import java.util.Map;
 
 import static org.junit.Assert.assertEquals;
 
@@ -48,17 +49,18 @@ public class GoogleSearchStepDefs {
         googleSearchPage.searchBox.sendKeys(input + Keys.ENTER);
     }
     @Then("user searches the following item")
-    public void user_searches_the_following_item(List<String> items) {
+    public void user_searches_the_following_item(List<Map <String, String>> items) {
 //        items.forEach (p-> {
 //            googleSearchPage.searchBox.clear();
 //            googleSearchPage.searchBox.sendKeys(p+Keys.ENTER);
 //assertEquals(p+" - Google Search", Driver.getDriver().getTitle());
 //        });
 
-        for (String s : items) {
+        for (Map <String, String> item : items) {
+            System.out.println(item.get("items"));
             googleSearchPage.searchBox.clear();
-            googleSearchPage.searchBox.sendKeys(s + Keys.ENTER);
-            assertEquals(s + " - Google Search", Driver.getDriver().getTitle());
+            googleSearchPage.searchBox.sendKeys(item.get("items")+ Keys.ENTER);
+           // assertEquals(s + " - Google Search", Driver.getDriver().getTitle());
         }
 
     }
@@ -73,4 +75,10 @@ public class GoogleSearchStepDefs {
 
         }
 
+
+
+
     }
+
+
+

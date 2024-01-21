@@ -7,7 +7,7 @@ Feature: Wikipedia Search Functionality Title Verification
     When user types "Steve Jobs" in the wiki search box
     When user clicks wiki search button
 
-  @dina
+  @B2G3-218 @B2G3-152
   Scenario: Wikipedia Search Functionality Title Verification
     Then user sees "Steve Jobs" is in the wiki title
 
@@ -15,6 +15,6 @@ Feature: Wikipedia Search Functionality Title Verification
   Scenario:Wikipedia Search Functionality Header Verification
     Then user sees "Steve Jobs" is in the wiki header
 
-  @dina
+  @B2G3-220 @B2G3-152
   Scenario:Wikipedia Search Functionality Image Header Verification
     Then user sees "Steve Jobs - Wikipedia" is in the image header
