@@ -88,6 +88,10 @@ public class DocuportLoginPage extends DocuportBasePage {
     @FindBy(xpath = "Customize Toolbar...")
     public WebElement loginText;
 
+    public static String getElementText(String text){
+        String xpath = "//*[normalize-space()='"+ text + "']";
+        return Driver.getDriver().findElement(By.xpath(xpath)).getText();
+    }
 
 }
 

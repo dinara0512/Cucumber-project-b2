@@ -25,16 +25,11 @@ public class DocuportBasePage {
 
     private static final Logger LOG = LogManager.getLogger();
 
-    public String getElementText(String text){
-        String xpath = "//*[normalize-space()='"+ text + "']";
-        return Driver.getDriver().findElement(By.xpath(xpath)).getText();
-    }
 
 
-    @FindBy(xpath = "//span[.=' Continue ']")
-    public WebElement continueButton;
 
-    @FindBy(xpath ="//span[.=' Home ']")
+
+    @FindBy(xpath ="//span[.='Home']")
     public WebElement homeButton;
 
 //    public void clickButton(String button) {
@@ -51,6 +46,16 @@ public class DocuportBasePage {
 //        }
 //    }
 
+    @FindBy(xpath = "//span[.=' Continue ']")
+    public WebElement continueButton;
+
+
+    public static String getElementText(String text){
+        String xpath = "//*[normalize-space()='"+ text + "']";
+        return Driver.getDriver().findElement(By.xpath(xpath)).getText();
+    }
+
+
     public void clickButton(String button){
         switch (button.toLowerCase()) {
             case "continue":
@@ -58,11 +63,15 @@ public class DocuportBasePage {
                 break;
             case "home":
                 WebElement homeButton = Driver.getDriver().findElement(By.xpath("//span[.='Home']"));
+                BrowserUtilities.waitForVisibility(homeButton,10);
                 BrowserUtilities.clickWithJS(homeButton);
+                //homeButton.click();
                 break;
             case "invitations":
                 WebElement invitationButton = Driver.getDriver().findElement(By.xpath("//span[.='Invitations']"));
-                invitationButton.click();
+                BrowserUtilities.waitForVisibility(invitationButton,5);
+                BrowserUtilities.clickWithJS(invitationButton);
+                //invitationButton.click();
                 break;
             default:
                 LOG.error("No such " + button + "exists");
@@ -72,7 +81,7 @@ public class DocuportBasePage {
     }
 
 
-    public WebElement getElement(String text){
+    public static WebElement getElement(String text){
         String xpath = "//*[normalize-space()='"+ text + "']";
         return Driver.getDriver().findElement(By.xpath(xpath));
     }
