@@ -21,7 +21,10 @@ public class LoginStepDefs {
 
     @Given("user is on Docuport login page")
     public void user_is_on_docuport_login_page() {
-        Driver.getDriver().get(ConfigurationReader.getProperty("env"));
+        String envFromJenkins = System.getenv("env");//will read from Jenkins
+        Driver.getDriver().get(ConfigurationReader.getProperty(envFromJenkins ));
+       // Driver.getDriver().get(ConfigurationReader.getProperty("env"));
+        BrowserUtilities.takeScreenshot();
         BrowserUtilities.waitForClickable(loginPage.loginButton, DocuportConstants.large);
     }
 

@@ -1,15 +1,21 @@
 package com.loop.pages;
 
 import com.loop.utilities.utilities.BrowserUtilities;
+import com.loop.utilities.utilities.ConfigurationReader;
 import com.loop.utilities.utilities.DocuportConstants;
 import com.loop.utilities.utilities.Driver;
+import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.PageFactory;
 
-public class DocuportLoginPage extends DocuportBasePage{
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
 
-    @FindBy(className = "v-btn__content" )
+public class DocuportLoginPage extends DocuportBasePage {
+
+    @FindBy(className = "v-btn__content")
     public WebElement loginButton;
     @FindBy(xpath = "//input[@id='input-14']")
     public WebElement loginInput;
@@ -24,42 +30,76 @@ public class DocuportLoginPage extends DocuportBasePage{
     @FindBy(xpath = "//span[@class='body-1 white--text']")
     public WebElement homePage;
 
+    @FindBy(xpath = "//div[@class='v-list-item__title']//span")
+    List<WebElement> allOptions;
 
-    public void loginDocuport(String username, String password){
+    public List<String> getCategory() throws InterruptedException {
+        Thread.sleep(5000);
+        List<String> actual = new ArrayList<>();
+        for (WebElement each : allOptions) {
+            Thread.sleep(5000);
+            actual.add(each.getText());
+            Thread.sleep(5000);
+        }
+        return actual;
+    }
+
+    DocuportBasePage docuportBasePage = new DocuportBasePage();
+
+
+    public void login(String userType) {
+
+        String username = ConfigurationReader.getProperty(userType + "_username");
+        String password = ConfigurationReader.getProperty(userType + "_password");
+
+
+        loginInput.sendKeys(username);
+        passwordInput.sendKeys(password);
+        loginButton.click();
+        if (BrowserUtilities.waitForVisibility(continueButton, DocuportConstants.small).isDisplayed()) {
+            continueButton.click();
+        }
+    }
+
+
+    public void loginDocuport(String username, String password) {
         //BrowserUtilities.waitForVisibility(loginInput, DocuportConstants.small);
         loginInput.clear();
         loginInput.sendKeys(username);
         passwordInput.clear();
         passwordInput.sendKeys(password);
         loginButton.click();
-        if (BrowserUtilities.waitForVisibility(continueButton, DocuportConstants.small).isDisplayed()){
-            continueButton.click();
+//        if (BrowserUtilities.waitForVisibility(continueButton, DocuportConstants.small).isDisplayed()) {
+//            continueButton.click();
         }
-    }
-    //    @FindBy(xpath = "//label[text()='Username or email']/following-sibling::input")
-//    public WebElement emailBox;
-//
-//    @FindBy(xpath = "//label[text()='Password']/following-sibling::input")
-//    public WebElement passwordBox;
 
+    @FindBy(xpath = "//input[@id='input-14']")
+    public WebElement usernameInput;
 
-
-
-//    public void login ( String userType) {
+//    @FindBy(xpath = "//input[@id='input-15']")
+//    public WebElement passwordInput;
 //
-//        String username  = ConfigurationReader.getProperty(userType+"_username");
-//        String password  = ConfigurationReader.getProperty(userType+"_password");
-//
-//
-//        emailBox.sendKeys(username);
-//        passwordBox.sendKeys(password);
-//        loginButton.click();
-//
-//    }
-
-    //    @FindBy(xpath = "//button[@type='submit']")
+//    @FindBy(xpath = "//button[@type='submit']")
 //    public WebElement loginButton;
+//
+//    @FindBy(xpath = "//button[@type='submit']//span")
+//    public WebElement continueButton;
 
+    @FindBy(xpath = "Customize Toolbar...")
+    public WebElement loginText;
 
 
 }
+
+
+
+//public void navigateModule(String moduleName) {
+//    for (WebElement each : allOptions) {
+//        if (each.getText().equals(moduleName)) {
+//            each.click();
+//        }
+//
+//
+//    }
+//}
+//}

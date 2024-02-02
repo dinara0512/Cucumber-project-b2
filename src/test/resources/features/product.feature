@@ -30,9 +30,10 @@ Feature: product data table practice
       | Monitors | Apple monitor 24  | 400           |
       | Monitors | ASUS Full HD      | 230           |
 
-    @wip
+    @wip1
     Scenario: verify students names on discord
       Then User should be able to see the following names in their groups
         | Group1 | Parvana | Yuliia    | Feyruz |
         | Group2 | Maya    | Ievgeniia | Nadir  |
         | Group3 | Gavin   | Caglar    | Loop   |
+
