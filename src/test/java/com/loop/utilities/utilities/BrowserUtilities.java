@@ -1,19 +1,28 @@
 package com.loop.utilities.utilities;
 
 import io.cucumber.java.Scenario;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.openqa.selenium.*;
 import org.openqa.selenium.interactions.Actions;
+import org.openqa.selenium.support.ui.ExpectedCondition;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
+import java.io.File;
+import java.io.FileWriter;
+import java.io.IOException;
 import java.time.Duration;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 import static org.junit.Assert.assertTrue;
 
 
 public class BrowserUtilities {
-
+    private static final Logger LOG = LogManager.getLogger();
     public static Scenario myScenario;
     public static void takeScreenshot() {
     try
@@ -183,6 +192,89 @@ public static void switchWindow (WebDriver driver, String targetTitle) {
         return wait.until(ExpectedConditions.elementToBeClickable(element));
     }
 
+    /**
+     *
+     * @param elements
+     * @return
+     */
+    public static List<String> getElementsText(List<WebElement> elements){
+        List <String> elementsText = new ArrayList<>();
+        for (WebElement element : elements){
+            elementsText.add(element.getText());
+        }
+        return elementsText;
+    }
+    public static List<String> getElementsTextWithStream (List<WebElement> elements){
+        return elements.stream()
+                .map(x->x.getText())
+                .collect(Collectors.toList());
+    }
+    public static List<String> getElementsTextWithStream2 (List<WebElement> elements){
+        return elements.stream()
+                .map(WebElement::getText)
+                .collect(Collectors.toList());
+    }
+    public static void waitForPageToLoad(long timeOutInSeconds) {
+        ExpectedCondition<Boolean> expectation = new ExpectedCondition<Boolean>() {
+            public Boolean apply(WebDriver driver) {
+                return ((JavascriptExecutor) driver).executeScript("return document.readyState").equals("complete");
+            }
+        };
+        try {
+            LOG.info("Waiting for page to load...");
+            WebDriverWait wait = new WebDriverWait(Driver.getDriver(), Duration.ofSeconds(timeOutInSeconds));
+            wait.until(expectation);
+        } catch (Throwable error) {
+            LOG.info(
+                    "Timeout waiting for Page Load Request to complete after " + timeOutInSeconds + " seconds");
+        }
+    }
+    public static void waitForStaleElement(WebElement element) {
+        int y = 0;
+        while (y <= 15) {
+            try {
+                element.isDisplayed();
+                break;
+            } catch (StaleElementReferenceException st) {
+                y++;
+                try {
+                    Thread.sleep(300);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+            } catch (WebDriverException we) {
+                y++;
+                try {
+                    Thread.sleep(300);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+            }
+        }
+    }
+
+    public static void createFileWithContent(String filePath, String content) {
+        File file = new File(filePath);
+
+        try {
+            file.createNewFile();
+            FileWriter fw = new FileWriter(file);
+            try {
+                fw.write(content);
+            } catch (Exception e) {
+                LOG.debug("Error during FileWriter append. " + e.getMessage(), e.getCause());
+            } finally {
+                try {
+                    fw.close();
+                } catch (Exception e) {
+                    LOG.debug("Error during FileWriter close. " + e.getMessage(), e.getCause());
+                }
+            }
+
+        } catch (IOException e) {
+            LOG.debug(e.getMessage(), e.getCause());
+        }
+    }
 //    public static void print_list () {
 //        System.out.println(Arrays.toString(smartBearSoftware.lineList.toArray()));
     //}

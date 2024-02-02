@@ -3,6 +3,7 @@ package com.loop.pages;
 import com.loop.utilities.utilities.BrowserUtilities;
 import com.loop.utilities.utilities.DocuportConstants;
 import com.loop.utilities.utilities.Driver;
+import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.PageFactory;
@@ -50,4 +51,11 @@ public class LoginPage {
             continueButton.click();
         }
     }
+
+    public void clickCategory (String category) throws InterruptedException {
+        Thread.sleep(5000);
+        Driver.getDriver().findElement(By.xpath("//a[contains(.,'" + category + "')]")).click();
+
+    }
+
 }

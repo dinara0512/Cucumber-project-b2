@@ -1,8 +1,8 @@
 Feature: practice smart bear
 
-  @wip
+ @B2G3-232 @B2G3-152
   Scenario: user should be able to place order and order should be seen in page
-    Given user is already logged in and navigated to order page
+    Given user is already logged in and navigated to "Order" page
     When user selects product type "FamilyAlbum"
     And user enters quantity 2
     And user enters customer name "Chuck Norris"
@@ -14,4 +14,4 @@ Feature: practice smart bear
     And user enters credit car number "1111222233334444"
     And user enters expiration date "12/25"
     And user enters process order button
-    Then user should see "Chuck Norris" in the first row of the table
+   Then user should see "Chuck Norris" in the first row of the table
